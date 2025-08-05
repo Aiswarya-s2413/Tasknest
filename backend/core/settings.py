@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from mongoengine import connect
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_mongoengine',
     'tasks',
 ]
 
@@ -73,16 +75,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'tasknestdb',
-        'CLIENT': {
-            'host': 'mongodb+srv://aiswaryaakku9:ow14jqLRcTJ2cHiI@cluster0.exzblrt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-        }
-    }
-}
+connect(
+    db='tasknestdb',  
+    username='aiswaryaakku9',
+    password='ow14jqLRcTJ2cHiI',
+    host='mongodb+srv://aiswaryaakku9:ow14jqLRcTJ2cHiI@cluster0.exzblrt.mongodb.net/tasknestdb?retryWrites=true&w=majority&appName=Cluster0'
+)
 
 
 
