@@ -23,20 +23,20 @@ class Task(Document):
 
     meta = {
         'collection': 'tasks',
-        'ordering': ['-created_at']
+        'ordering': ['-created_at'],
         'indexes':['title', 'due_date', 'is_completed']
     }
 
     def __str__(self):
         return self.title
 
-    def save(self, *args, ***kwargs):
+    def save(self, *args, **kwargs):
         """Override save to update timestamp"""
         self.updated_at = datetime.utcnow()
         if self.is_completed and not self.completed_at:
             self.completed_at = datetime.utcnow()
         elif not self.is_completed:
-            self.completed = None
+            self.completed_at = None
         return super().save(*args, **kwargs)
 
     def mark_complete(self):
