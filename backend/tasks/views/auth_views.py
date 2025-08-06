@@ -6,67 +6,71 @@ from tasks.models import User
 import random
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
-from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
-
-class CustomTokenObtainPairView(TokenObtainPairView):
-    serializer_class = TokenObtainPairSerializer
-
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        data = response.data
-
-        # Set tokens in cookies
-        response.set_cookie(
-            key='access',
-            value=data['access'],
-            httponly=True,
-            secure=False, 
-            samesite='Lax',
-            max_age=3600,  # 1 hour
-        )
-
-        response.set_cookie(
-            key='refresh',
-            value=data['refresh'],
-            httponly=True,
-            secure=False,
-            samesite='Lax',
-            max_age=7 * 24 * 3600,  # 7 days
-        )
-
-        # Remove tokens from response body
-        del data['access']
-        del data['refresh']
-
-        return response
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import AllowAny
 
 class SignupView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
-        Serializer = UserSignupSerializer(data=request.data)
-        if Serializer.is_valid():
+        serializer = UserSignupSerializer(data=request.data)
+        if serializer.is_valid():
             email = serializer.validated_data['email']
             if User.objects(email=email).first():
-                return Response({'error': 'User already exists'},status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'User already exists'}, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
-            return Response({'message': 'User registered successfully'},status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            return Response({
+
+            # Generate tokens
+            refresh = RefreshToken.for_user(user)
+            access = str(refresh.access_token)
+            refresh = str(refresh)
+            print(f"Access Token: {access}")
+            print(f"Refresh Token: {refresh}")
+
+            # Create response
+            response = Response({
                 "message": "Login successful",
                 "user": {
                     "id": str(user.id),
-                    "full_name": user.full_name,
+                    "name": user.name,
                     "email": user.email,
                 }
             }, status=status.HTTP_200_OK)
+
+            # Set cookies
+            response.set_cookie(
+                key='access',
+                value=access,
+                httponly=True,
+                secure=False,  # Change to True in production
+                samesite='Lax',
+                max_age=3600,
+            )
+            print("Access token set in cookie")
+
+            response.set_cookie(
+                key='refresh',
+                value=refresh,
+                httponly=True,
+                secure=False,  # Change to True in production
+                samesite='Lax',
+                max_age=7 * 24 * 3600,
+            )
+            print("Refresh token set in cookie")
+
+            return response
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 class RequestOTPView(APIView):

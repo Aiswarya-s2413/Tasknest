@@ -1,9 +1,9 @@
-from rest_framework_mongoengine import serializers
+from rest_framework_mongoengine import serializers as s
 from rest_framework import serializers
 from tasks.models import User
-from bcrypt import hashpw, gensalt
+from bcrypt import hashpw, gensalt,checkpw
 
-class UserSignupSerializer(serializers.DocumentSerializer):
+class UserSignupSerializer(s.DocumentSerializer):
     class Meta:
         model = User
         fields = ['name', 'email', 'password']
@@ -31,13 +31,12 @@ class UserLoginSerializer(serializers.Serializer):
         if not user:
             raise serializers.ValidationError("Invalid email or password.")
 
-        if not bcrypt.checkpw(password.encode(), user.password.encode()):
+        if not checkpw(password.encode(), user.password.encode()):
             raise serializers.ValidationError("Invalid email or password.")
 
         data['user'] = user
         return data
 
-from rest_framework import serializers
 
 class OTPRequestSerializer(serializers.Serializer):
     email = serializers.EmailField()

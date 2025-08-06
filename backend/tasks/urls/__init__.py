@@ -1,2 +1,5 @@
-from .task_urls import *
-from .auth_urls import *
+from django.urls import path, include
+
+urlpatterns = [
+    path('', include('tasks.urls.auth_urls')),  
+]
