@@ -7,9 +7,9 @@ from rest_framework import status
 
 
 class TaskCreateView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
+        print("Cookies:", request.COOKIES)
+        print("Access token:", request.COOKIES.get('access'))
         serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             # Attach current user to the task
@@ -19,9 +19,9 @@ class TaskCreateView(APIView):
 
 
 class TaskListView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
+        print("Cookies:", request.COOKIES)
+        print("Access token:", request.COOKIES.get('access'))
         tasks = Task.objects(user=request.user).order_by('-created_at')
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

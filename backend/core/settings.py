@@ -141,6 +141,7 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 # REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'tasks.authentication.CookieJWTAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
@@ -182,38 +183,43 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOW_ALL_ORIGINS = False
+# CORS Configuration
+CORS_ALLOW_ALL_ORIGINS = True  # Keep this for development
+CORS_ALLOW_CREDENTIALS = True  # This is correct
 
-CORS_ALLOWED_ORIGINS = [
-    "http://0.0.0.0:3000",      # Your frontend
-    "http://127.0.0.1:3000",    # Alternative localhost
-    "http://localhost:3000",     # Standard localhost
+CORS_ALLOWED_ORIGINS = [      
+    "http://127.0.0.1:3000",    
+    "http://localhost:3000",     
 ]
 
-CORS_ALLOW_CREDENTIALS = True
-
- 
+# CSRF Settings
 CSRF_TRUSTED_ORIGINS = [
-    'http://0.0.0.0:3000',      
     'http://127.0.0.1:3000',     
     'http://localhost:3000',     
     'http://127.0.0.1:8000',    
     'http://localhost:8000',     
 ]
 
-
+# Cookie Settings 
 CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_SECURE = False     
+CSRF_COOKIE_SECURE = False      
 CSRF_COOKIE_HTTPONLY = False    
 CSRF_COOKIE_SAMESITE = 'Lax'    
+
+# Session Cookie Settings 
 SESSION_COOKIE_SAMESITE = 'Lax'  
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = False   
+SESSION_COOKIE_HTTPONLY = False   
+SESSION_COOKIE_SECURE = False     
 
-# Remove domain restrictions for development
-# CSRF_COOKIE_DOMAIN = None  # Let Django auto-detect
-# SESSION_COOKIE_DOMAIN = None  # Let Django auto-detect
+# Add JWT Cookie Settings 
+JWT_COOKIE_SECURE = False        
+JWT_COOKIE_HTTPONLY = False      
+JWT_COOKIE_SAMESITE = 'Lax'     
 
+ACCESS_TOKEN_COOKIE_NAME = 'access'
+REFRESH_TOKEN_COOKIE_NAME = 'refresh'
+
+# CORS Headers 
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
@@ -233,6 +239,7 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+    'cookie',  
 ]
 
 

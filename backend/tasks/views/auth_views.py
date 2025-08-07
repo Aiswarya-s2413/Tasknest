@@ -52,20 +52,24 @@ class LoginView(APIView):
             response.set_cookie(
                 key='access',
                 value=access,
-                httponly=True,
-                secure=False,  # Change to True in production
-                samesite='Lax',
+                httponly=False,
+                secure=False,
+                samesite=None,  
                 max_age=3600,
+                domain=None,    
+                path='/',
             )
             print("Access token set in cookie")
 
             response.set_cookie(
                 key='refresh',
                 value=refresh,
-                httponly=True,
-                secure=False,  # Change to True in production
-                samesite='Lax',
-                max_age=7 * 24 * 3600,
+                httponly=False,
+                secure=False,
+                samesite=None,  
+                max_age=3600,
+                domain=None,    
+                path='/',
             )
             print("Refresh token set in cookie")
 
@@ -74,6 +78,7 @@ class LoginView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 class RequestOTPView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = OTPRequestSerializer(data=request.data)
         if serializer.is_valid():
@@ -102,6 +107,7 @@ class RequestOTPView(APIView):
         return Response(serializer.errors, status=400)  
 
 class VerifyOTPView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = OTPVerifySerializer(data=request.data)
         if serializer.is_valid():
