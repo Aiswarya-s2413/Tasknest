@@ -108,6 +108,7 @@ class RequestOTPView(APIView):
 
 class VerifyOTPView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = OTPVerifySerializer(data=request.data)
         if serializer.is_valid():
@@ -124,18 +125,56 @@ class VerifyOTPView(APIView):
             if not user.otp_expiry or user.otp_expiry < datetime.utcnow():
                 return Response({'error': 'OTP expired'}, status=400)
 
-            # clear OTP after use
+            # Clear OTP after use
             user.otp = None
             user.otp_expiry = None
             user.is_verified = True
             user.save()
 
-            return Response({
-                'message': 'OTP verified successfully',
-                'user': {
-                    'id': str(user.id),
-                    'email': user.email,
-                    'full_name': user.full_name
+            refresh = RefreshToken.for_user(user)
+            access = str(refresh.access_token)
+            refresh_token = str(refresh)
+
+            response = Response({
+                "message": "Login successful via OTP",
+                "user": {
+                    "id": str(user.id),
+                    "name": user.name,
+                    "email": user.email,
                 }
-            }, status=200)
+            }, status=status.HTTP_200_OK)
+
+            response.set_cookie(
+                key='access',
+                value=access,
+                httponly=False, 
+                secure=False,
+                samesite=None,
+                max_age=3600,
+                domain=None,
+                path='/',
+            )
+            response.set_cookie(
+                key='refresh',
+                value=refresh_token,
+                httponly=False, 
+                secure=False,
+                samesite=None,
+                max_age=3600,
+                domain=None,
+                path='/',
+            )
+
+            return response
+
         return Response(serializer.errors, status=400)
+
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        
+        # Delete cookies 
+        response.delete_cookie('access')
+        response.delete_cookie('refresh')
+        
+        return response

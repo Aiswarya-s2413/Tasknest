@@ -25,3 +25,35 @@ class TaskListView(APIView):
         tasks = Task.objects(user=request.user).order_by('-created_at')
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class TaskDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk, user):
+        return get_object_or_404(Task, id=pk, user=user)
+
+    def get(self, request, pk):
+        task = self.get_object(pk, request.user)
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        task = self.get_object(pk, request.user)
+        serializer = TaskSerializer(task, data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user) 
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        task = self.get_object(pk, request.user)
+        serializer = TaskSerializer(task, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        task = self.get_object(pk, request.user)
+        task.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
