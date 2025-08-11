@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskNest - Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card fade-in">
+      <h2>Welcome Back</h2>
+
+      <!-- Tabs to switch login type -->
+      <div class="tab-container">
+        <button type="button" id="password-tab" class="tab-button active">Password Login</button>
+        <button type="button" id="otp-tab" class="tab-button">OTP Login</button>
+      </div>
+
+      <!-- Password Login Form -->
+      <form id="login-form" class="auth-form">
+        <!-- Error Message Container -->
+        <div id="login-error" class="error-message hidden"></div>
+        
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email Address" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Password" class="form-input" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+
+      <!-- OTP Login Form -->
+      <form id="otp-form" class="auth-form hidden">
+        <!-- Error Message Container for OTP -->
+        <div id="otp-error" class="error-message hidden"></div>
+        <!-- Success Message Container for OTP -->
+        <div id="otp-success" class="success-message hidden"></div>
+        
+        <div class="form-group">
+          <input type="email" name="otp-email" placeholder="Email Address" class="form-input" required>
+        </div>
+        <button type="button" id="request-otp" class="btn btn-secondary">Request OTP</button>
+
+        <div class="form-group hidden" id="otp-input-group">
+          <input type="text" name="otp-code" placeholder="Enter OTP Code" class="form-input">
+        </div>
+        <button type="button" id="verify-otp" class="btn btn-primary hidden">Verify OTP</button>
+      </form>
+
+      <div class="auth-link">
+        Don't have an account? <a href="signup.html">Sign up here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

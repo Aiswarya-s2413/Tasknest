@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskNest - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">TASKNEST</div>
+        <div class="nav-right">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="tasks.html">My Tasks</a>
+            <a href="" onclick="logout(event)">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Your task overview at a glance</p>
+        </div>
+
+        <!-- Calendar -->
+        <div class="calendar-container fade-in">
+            <div class="calendar-header">
+                <button onclick="changeMonth(-1)" class="calendar-nav-btn" id="prev-month">← Previous</button>
+                <h2 id="month-year" class="calendar-month-year"></h2>
+                <button onclick="changeMonth(1)" class="calendar-nav-btn" id="next-month">Next →</button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/calender.js"></script>
+</body>
+</html>

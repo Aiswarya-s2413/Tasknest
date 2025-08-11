@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskNest - Sign Up</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card fade-in">
+      <h2>Join TaskNest</h2>
+
+      <form id="signup-form" class="auth-form">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Full Name" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email Address" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Create Password" class="form-input" minlength="6" required>
+          <small class="password-hint" style="color: #666; font-size: 0.9rem; margin-top: 0.5rem; display: block;">Password must be at least 6 characters long</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Account</button>
+      </form>
+
+      <div class="auth-link">
+        Already have an account? <a href="index.html">Sign in here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/signup.js"></script>
+</body>
+</html>
