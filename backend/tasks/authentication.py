@@ -46,7 +46,7 @@ class CookieJWTAuthentication(JWTAuthentication):
             
             from tasks.models import User  
             
-            # For MongoDB/MongoEngine, use ObjectId
+            # For MongoDB-ObjectId
             user = User.objects.get(id=ObjectId(user_id))
             return user
                 

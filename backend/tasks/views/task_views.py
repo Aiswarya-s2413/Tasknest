@@ -4,9 +4,13 @@ from tasks.serializers import TaskSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from mongoengine.errors import DoesNotExist
+from rest_framework.exceptions import NotFound
 
 
 class TaskCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         print("Cookies:", request.COOKIES)
         print("Access token:", request.COOKIES.get('access'))
@@ -19,6 +23,8 @@ class TaskCreateView(APIView):
 
 
 class TaskListView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request):
         print("Cookies:", request.COOKIES)
         print("Access token:", request.COOKIES.get('access'))
@@ -30,7 +36,10 @@ class TaskDetailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self, pk, user):
-        return get_object_or_404(Task, id=pk, user=user)
+        try:
+            return Task.objects.get(id=pk, user=user)
+        except DoesNotExist:
+            raise NotFound("Task not found")
 
     def get(self, request, pk):
         task = self.get_object(pk, request.user)
