@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Fetch tasks
 function fetchTasks() {
     console.log('Document cookies:', document.cookie);
-    fetch("https://3.27.123.53.sslp.io/api/tasks/", {
+    fetch("https://3.27.123.53.sslip.io/api/tasks/", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -113,8 +113,8 @@ function setupFormSubmit() {
         // Added: check if editing or creating
         const taskId = form.getAttribute("data-editing-id");
         const url = taskId 
-            ? `https://3.27.123.53.sslp.io/api/tasks/${taskId}/` 
-            : "https://3.27.123.53.sslp.io/api/tasks/create/";
+            ? `https://3.27.123.53.sslip.io/api/tasks/${taskId}/` 
+            : "https://3.27.123.53.sslip.io/api/tasks/create/";
         const method = taskId ? "PUT" : "POST";
 
         fetch(url, {
@@ -149,7 +149,7 @@ function setupFormSubmit() {
 
 // Populate modal with existing task data
 function editTask(id) {
-    fetch(`https://3.27.123.53.sslp.io/api/tasks/${id}/`, {
+    fetch(`https://3.27.123.53.sslip.io/api/tasks/${id}/`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -175,7 +175,7 @@ function editTask(id) {
 
 // Toggle task completion
 function toggleTaskCompletion(id, isCompleted) {
-    fetch(`https://3.27.123.53.sslp.io/api/tasks/${id}/`, {
+    fetch(`https://3.27.123.53.sslip.io/api/tasks/${id}/`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
@@ -197,7 +197,7 @@ function toggleTaskCompletion(id, isCompleted) {
 function deleteTask(id) {
     if (!confirm("Are you sure you want to delete this task?")) return;
 
-    fetch(`https://3.27.123.53.sslp.io/api/tasks/${id}/`, {
+    fetch(`https://3.27.123.53.sslip.io/api/tasks/${id}/`, {
         method: "DELETE",
         credentials: "include",
     })
