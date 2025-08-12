@@ -4,7 +4,7 @@ let tasks = [];
 
 function fetchTasks() {
     console.log('Document cookies:', document.cookie);
-    fetch("https://3.27.123.53.sslp.io/api/tasks/", {
+    fetch("https://3.27.123.53.sslip.io/api/tasks/", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-const API_BASE = "https://3.27.123.53.sslp.io/api"; 
+const API_BASE = "https://3.27.123.53.sslip.io/api"; 
 
 // Utility functions for showing messages
 function showError(elementId, message) {

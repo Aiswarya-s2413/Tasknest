@@ -30,7 +30,7 @@ document.getElementById("signup-form").addEventListener("submit", async function
       
       console.log('Attempting signup with:', { email: data.email });
       
-      const response = await fetch("https://3.27.123.53.sslp.io/api/signup/", {
+      const response = await fetch("https://3.27.123.53.sslip.io/api/signup/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
