@@ -1,6 +1,6 @@
 function logout(event) {
     if (event) event.preventDefault();
-    fetch('https://3.27.123.53.sslip.io/api/logout/', {
+    fetch('/api/logout/', {
         method: 'POST',
         credentials: 'include' 
     })
