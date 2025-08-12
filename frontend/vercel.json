@@ -1,1 +1,8 @@
-{}
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://3.27.123.53.sslip.io/api/$1"
+    }
+  ]
+}
