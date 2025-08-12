@@ -4,7 +4,7 @@ let tasks = [];
 
 function fetchTasks() {
     console.log('Document cookies:', document.cookie);
-    fetch("http://127.0.0.1:8000/api/tasks/", {
+    fetch("http://3.27.123.53/api/tasks/", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

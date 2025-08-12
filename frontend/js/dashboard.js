@@ -1,6 +1,6 @@
 function logout(event) {
     if (event) event.preventDefault();
-    fetch('http://127.0.0.1:8000/api/logout/', {
+    fetch('http://3.27.123.53/api/logout/', {
         method: 'POST',
         credentials: 'include' 
     })

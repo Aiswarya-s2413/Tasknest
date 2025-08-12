@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8000/api"; 
+const API_BASE = "http://3.27.123.53/api"; 
 
 // Utility functions for showing messages
 function showError(elementId, message) {
